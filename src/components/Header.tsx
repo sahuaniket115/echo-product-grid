@@ -1,9 +1,11 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Search, ShoppingCart, Menu, User, X } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Search, ShoppingCart, Menu, User, X, Heart, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from './ThemeToggle';
+import { Badge } from '@/components/ui/badge';
+import { toast } from '@/hooks/use-toast';
 
 interface HeaderProps {
   searchQuery: string;
@@ -18,6 +20,7 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -25,6 +28,35 @@ const Header: React.FC<HeaderProps> = ({
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Search initiated",
+      description: `Searching for: ${searchQuery}`,
+    });
+  };
+
+  const handleWishlistClick = () => {
+    toast({
+      title: "Wishlist",
+      description: "Wishlist feature coming soon!",
+    });
+  };
+  
+  const handleNotificationsClick = () => {
+    toast({
+      title: "Notifications",
+      description: "You have no new notifications",
+    });
+  };
+
+  const handleCartClick = () => {
+    toast({
+      title: "Shopping Cart",
+      description: cartItemCount > 0 ? `You have ${cartItemCount} items in your cart` : "Your cart is empty",
+    });
   };
 
   return (
@@ -56,24 +88,26 @@ const Header: React.FC<HeaderProps> = ({
           <div className="flex items-center space-x-4">
             {/* Search Bar */}
             <div className={`${isSearchOpen ? 'flex' : 'hidden md:flex'} items-center relative`}>
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2 rounded-full border border-input bg-background focus:border-primary focus:outline-none w-full md:w-64"
-              />
-              <Search className="absolute left-3 h-4 w-4 text-muted-foreground" />
-              {isSearchOpen && (
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="md:hidden absolute right-2" 
-                  onClick={toggleSearch}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              )}
+              <form onSubmit={handleSearch}>
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-4 py-2 rounded-full border border-input bg-background focus:border-primary focus:outline-none w-full md:w-64"
+                />
+                <Search className="absolute left-3 h-4 w-4 text-muted-foreground" />
+                {isSearchOpen && (
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="md:hidden absolute right-2" 
+                    onClick={toggleSearch}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
+              </form>
             </div>
 
             {/* Mobile Search Toggle */}
@@ -90,13 +124,50 @@ const Header: React.FC<HeaderProps> = ({
             {/* Theme Toggle */}
             <ThemeToggle />
 
+            {/* Wishlist Icon */}
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="hidden md:flex" 
+              aria-label="Wishlist"
+              onClick={handleWishlistClick}
+            >
+              <Heart className="h-5 w-5" />
+            </Button>
+
+            {/* Notifications Icon */}
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="hidden md:flex" 
+              aria-label="Notifications"
+              onClick={handleNotificationsClick}
+            >
+              <Bell className="h-5 w-5" />
+            </Button>
+
             {/* User Icon */}
-            <Button variant="ghost" size="icon" className="hidden md:flex" aria-label="Account">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="hidden md:flex" 
+              aria-label="Account"
+              onClick={() => toast({
+                title: "Account",
+                description: "Account features coming soon!",
+              })}
+            >
               <User className="h-5 w-5" />
             </Button>
 
             {/* Cart Icon */}
-            <Button variant="ghost" size="icon" className="relative" aria-label="Cart">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="relative" 
+              aria-label="Cart"
+              onClick={handleCartClick}
+            >
               <ShoppingCart className="h-5 w-5" />
               {cartItemCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
@@ -149,6 +220,20 @@ const Header: React.FC<HeaderProps> = ({
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Featured
+              </Link>
+              <Link 
+                to="/" 
+                className="font-medium hover:text-primary transition-colors flex items-center gap-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Heart className="h-4 w-4" /> Wishlist
+              </Link>
+              <Link 
+                to="/" 
+                className="font-medium hover:text-primary transition-colors flex items-center gap-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Bell className="h-4 w-4" /> Notifications
               </Link>
               <Link 
                 to="/" 
