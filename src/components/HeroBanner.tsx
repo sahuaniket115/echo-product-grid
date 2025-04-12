@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const HeroBanner = () => {
   return (
@@ -13,11 +14,20 @@ const HeroBanner = () => {
           Explore our curated collection of premium items at competitive prices.
         </p>
         <div className="animate-zoom-in flex justify-center gap-4">
-          <Button size="lg" className="bg-white text-shop-primary hover:bg-white/90">
-            Shop Now
+          <Button 
+            size="lg" 
+            className="bg-white text-shop-primary hover:bg-white/90"
+            asChild
+          >
+            <Link to="/shop">Shop Now</Link>
           </Button>
-          <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-            New Arrivals
+          <Button 
+            size="lg" 
+            variant="outline" 
+            className="border-white text-white hover:bg-white/10 dark:text-white dark:hover:text-white"
+            asChild
+          >
+            <Link to="/featured">New Arrivals</Link>
           </Button>
         </div>
       </div>
