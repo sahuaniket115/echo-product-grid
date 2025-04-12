@@ -36,6 +36,7 @@ const Header: React.FC<HeaderProps> = ({
       title: "Search initiated",
       description: `Searching for: ${searchQuery}`,
     });
+    navigate('/shop');
   };
 
   const handleWishlistClick = () => {
@@ -73,13 +74,13 @@ const Header: React.FC<HeaderProps> = ({
             <Link to="/" className="font-medium hover:text-primary transition-colors">
               Home
             </Link>
-            <Link to="/" className="font-medium hover:text-primary transition-colors">
+            <Link to="/shop" className="font-medium hover:text-primary transition-colors">
               Shop
             </Link>
-            <Link to="/" className="font-medium hover:text-primary transition-colors">
+            <Link to="/categories" className="font-medium hover:text-primary transition-colors">
               Categories
             </Link>
-            <Link to="/" className="font-medium hover:text-primary transition-colors">
+            <Link to="/featured" className="font-medium hover:text-primary transition-colors">
               Featured
             </Link>
           </nav>
@@ -201,21 +202,21 @@ const Header: React.FC<HeaderProps> = ({
                 Home
               </Link>
               <Link 
-                to="/" 
+                to="/shop" 
                 className="font-medium hover:text-primary transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Shop
               </Link>
               <Link 
-                to="/" 
+                to="/categories" 
                 className="font-medium hover:text-primary transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Categories
               </Link>
               <Link 
-                to="/" 
+                to="/featured" 
                 className="font-medium hover:text-primary transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -224,21 +225,33 @@ const Header: React.FC<HeaderProps> = ({
               <Link 
                 to="/" 
                 className="font-medium hover:text-primary transition-colors flex items-center gap-2"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  handleWishlistClick();
+                }}
               >
                 <Heart className="h-4 w-4" /> Wishlist
               </Link>
               <Link 
                 to="/" 
                 className="font-medium hover:text-primary transition-colors flex items-center gap-2"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  handleNotificationsClick();
+                }}
               >
                 <Bell className="h-4 w-4" /> Notifications
               </Link>
               <Link 
                 to="/" 
                 className="font-medium hover:text-primary transition-colors flex items-center gap-2"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  toast({
+                    title: "Account",
+                    description: "Account features coming soon!",
+                  });
+                }}
               >
                 <User className="h-4 w-4" /> My Account
               </Link>
